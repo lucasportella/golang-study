@@ -7,7 +7,7 @@ import (
 func main() {
 	chan1 := make(chan int)
 	quit := make(chan int)
-// a ordem das chamadas das funções importa. Primeiro tem que ser a go routine (receive) pois caso a sendToChannel seja chamada antes, como ela é síncrona, vai terminar sem enviar nada para o canal e a função receive não vai conseguir receber os vaores, resultando em deadlock
+	// a ordem das chamadas das funções importa. Primeiro tem que ser a go routine (receive) pois caso a sendToChannel seja chamada antes, como ela é síncrona, vai terminar sem enviar nada para o canal e a função receive não vai conseguir receber os vaores, resultando em deadlock
 	go receive(chan1, quit)
 	sendToChannel(chan1, quit)
 }
@@ -22,7 +22,7 @@ func receive(chan1 chan int, quit chan int) {
 
 func sendToChannel(chan1 chan int, quit chan int) {
 	contador := 1
-	for i := 0; i < 55; i++ {
+	for i := 0; i < 50; i++ {
 		select {
 		// envia valor de contador para o canal 1 que o despejará na função receive
 		case chan1 <- contador:
