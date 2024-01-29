@@ -2,42 +2,27 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"sync"
+	"time"
 )
 
+var wg sync.WaitGroup
+
 func main() {
-	even := make(chan int)
-	odd := make(chan int)
-	quit := make(chan bool)
-	sliceEven := []int{}
-	sliceOdd := []int{}
-	go receive(even, odd, quit, &sliceEven, &sliceOdd)
-	for i := 0; i <= 50; i++ {
-		send(even, odd, quit, i)
-	}
+	wg.Add(1)
+	trabalho()
+	wg.Wait()
 }
 
-func send(even chan int, odd chan int, quit chan bool, number int) {
-	if number == 50 {
-		even <- number
-		quit <- true
-	} else if number%2 == 0 {
-		even <- number
-	} else {
-		odd <- number
-	}
-}
-
-func receive(even chan int, odd chan int, quit chan bool, sliceEven *[]int, sliceOdd *[]int) {
-	for {
-		select {
-		case number := <-even:
-			*sliceEven = append(*sliceEven, number)
-		case number := <-odd:
-			*sliceOdd = append(*sliceOdd, number)
-		case <-quit:
-			fmt.Printf("Even: %v\n", sliceEven)
-			fmt.Printf("Odd: %v\n", sliceOdd)
-			return
+func trabalho() chan string {
+	chan1 := make(chan string)
+	go func() {
+		defer wg.Done() // Ensure that Done() is called when the goroutine exits
+		for i := 1; i <= 100; i++ {
+			chan1 <- fmt.Sprintf("loop value to %v: %v", chan1, i)
+			time.Sleep(time.Duration(rand.Intn(1e3)))
 		}
-	}
+	}()
+	return chan1
 }
