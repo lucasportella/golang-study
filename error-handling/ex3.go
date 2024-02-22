@@ -11,7 +11,7 @@ func (e erroEspecial) Error() string {
 }
 
 func erro(e error) {
-	// "e" is an interface type, in Go, when you have an interface type, you need to use a type assertion to access the underlying concrete type and its fields.
+	// "e" is an interface type. In Go, when you have an interface type, you need to use a type assertion to access the underlying concrete type and its fields.
 	// although erroEspecial is a struct, since it implements the Error interface, it can be passe as an arg to this fn.
 	fmt.Print(e.(erroEspecial).qualquerCoisa)
 }
