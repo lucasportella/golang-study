@@ -1,6 +1,6 @@
 package doc
 
 // fn to test godoc
-func testDoc1() {
+func TestDoc1() {
 	fmt.Println("test godoc")
 }
